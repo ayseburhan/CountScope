@@ -18,6 +18,7 @@ def home(request):
     # html=f"<h1>seçenek listesi</h1><br><ul>{list_items}</ul>"
     # return HttpResponse(html)    
    return render(request, "index.html")
+
 def about(request):
     return render(request, "about.html")
 
@@ -26,8 +27,11 @@ def contact(request):
 
 def getCoursesByCategory(request, category_name):
     try:
-        category_text = data[category_name];    
-        return HttpResponse(category_text)
+        category_text = data[category_name];
+        return render(request,'seçenekler.html',{
+            'category' : category_name,
+            'category_text' : category_text
+        })
     except:
         return HttpResponseNotFound("yanlış kategori seçimi")
 
