@@ -1,22 +1,34 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block page_title %} 
     Anasayfa
 {% endblock page_title %} 
 
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'countscope/css/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-3">
     <div class="row">
+        {% for secenek in secenekler %}
         <div class="col-6">
-            <!--menu-->
-            {% include "partials/_photo.html" %}
+            <div class="card mb-3" style="width: 40rem; height: 20rem; ">
+                <div class="card-body">
+                    <h5 class="card-title">{{ secenek.title|title }}</h5>
+                    <p class="card-text">{{ secenek.description|title }}</p>
+                    <a href="{{ secenek.slug }}" class="card-link">{{secenek.title|title}} Yükle</a>
+                    <p>{{secenek.date | date:'SHORT_DATE_FORMAT'}}</p>
+                </div>
+            </div>
         </div>
-        <div class="col-6">
-            <!--content-->
-            {% include "partials/_video.html" %}
-        </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
-{% endblock content %}
 
+
+
+{% endblock content %}
+{% block js_files %}
+    <link rel="stylesheet" href="{% static 'countscope/js/script.js' %}">
+{% endblock  %}

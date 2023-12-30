@@ -1,23 +1,46 @@
+from datetime import date
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-
+from .models import CountScope
 # Create your views here.
 data = {
     "photo":"photo kısmı",
     "video":"video kısmı", 
 }
-def home(request):
-    # list_items=""
-    # category_list = list(data.keys())
-
-    # for category in category_list:
-    #     redirect_url= reverse('courses_by_category',args=[category])
-    #     list_items += f"<li><a href = '{redirect_url}'>{category}</a></li>"
+db ={
+       "secenekler": [
+           {
+        "title":"photo ",
+        "description":"photo kısmı açıklaması",
+        "imageUrl":"https://www.shaip.com/wp-content/uploads/2022/05/Blog_What-is-AI-Image-Recognition-1.jpg",
+        "slug":"photo-kısmı",
+        "date": date(2023,12,27),
+},
+{
+               
+        "title":"video kısmı",
+        "description":"video kısmı açıklaması",
+        "imageUrl":"https://www.shaip.com/wp-content/uploads/2022/05/Blog_What-is-AI-Image-Recognition-1.jpg",
+        "slug":"photo-kısmı",
+        "date": date(2023,12,27),
+}
+],
+"categories" : [
     
-    # html=f"<h1>seçenek listesi</h1><br><ul>{list_items}</ul>"
-    # return HttpResponse(html)    
-   return render(request, "index.html")
+        {"id":1, "name ": "photo" , "slug": "photo" },
+        {"id":2, "name ": "video" , "slug": "video" },
+    
+]
+} 
+    
+def home(request):  
+   secenekler = CountScope.objects.all()
+   kategori = db["categories"]
+   return render(request, "index.html",{
+       'secenekler': secenekler,
+       'kategori': kategori
+   })
 
 def about(request):
     return render(request, "about.html")
