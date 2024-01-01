@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load static %}
+
 {% block page_title %} 
     Anasayfa
 {% endblock page_title %} 
@@ -11,25 +12,25 @@
 {% block content %}
 <div class="container mt-3">
     <div class="row">
-        {% for secenek in secenekler %}
+        {% for count in counts %}
         <div class="col-6">
             <div class="card mb-3" style="width: 40rem; height: 20rem; ">
                 <div class="card-body">
-                    <h5 class="card-title">{{ secenek.title|title }}</h5>
-                    <p class="card-text">{{ secenek.description|title }}</p>
-                    <a href="{{ secenek.slug }}" class="card-link">{{secenek.title|title}} Yükle</a>
-                    <p>{{secenek.date | date:'SHORT_DATE_FORMAT'}}</p>
-                    {% include 'partials/_pagination.html' %}
+                    <h5 class="card-title">{{ count.title|title }}</h5>
+                    <p class="card-text">{{ count.description|title }}</p>
+                    <a href="{{ count.slug }}" class="card-link">{{ count.title|title }} Yükle</a>
+                    <p>{{ count.date | date:'SHORT_DATE_FORMAT' }}</p>
+                    <!-- Eğer sayfalama buraya aitse, include yerine burada yapabilirsiniz. -->
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div class="alert alert-warning">Sonuç Bulunamadı.</div>
         {% endfor %}
     </div>
 </div>
-
-
-
 {% endblock content %}
+
 {% block js_files %}
     <link rel="stylesheet" href="{% static 'countscope/js/script.js' %}">
-{% endblock  %}
+{% endblock %}
