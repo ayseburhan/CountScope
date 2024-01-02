@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'countscope/css/style.css' %}">
+{% endblock %}
+
+{% block page_title %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+               <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                          
+                            <th>Title</th>
+                            <th>Slug</th>
+                            <th style="width:120px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for count in counts %}
+                            <tr>
+                                <td>{{ count.title }}</td>
+                                <td>{{ count.slug }}</td>
+                                <td>
+                                    <a href="{% url 'count_edit' count.id %}" class="btn btn-primary btn-sm">güncelle</a>
+                                    <a href="{% url 'count_delete' count.id %}" class="btn btn-danger btn-sm">sil</a>
+                                </td>
+                            </tr>                        
+                        {% endfor %}
+                    </tbody>
+               </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js_files %}
+    <link rel="stylesheet" href="{% static 'countscope/js/script.js' %}">
+{% endblock  %}

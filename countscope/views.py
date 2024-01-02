@@ -1,8 +1,8 @@
 from datetime import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import  HttpResponseNotFound 
 from django.urls import reverse
-from countscope.forms import CountScopeCreateForm
+from countscope.forms import CountScopeCreateForm, CountScopeEditForm
 from .models import CountScope
 
 
@@ -65,6 +65,32 @@ def create(request):
     # Form, render edilerek HTML şablonuna gönderiliyor
     return render(request, "create.html", {"form": form})
 
+def count_list(request):
+    counts = CountScope.objects.all()
+    return render(request, 'count-list.html', {
+        'counts': counts
+    })
+
+def count_edit(request, id):
+    count = get_object_or_404(CountScope, pk=id)
+
+    if request.method == "POST":
+        form = CountScopeEditForm(request.POST, instance=count)
+        form.save()
+        return redirect("count_list")
+    else:
+        form = CountScopeEditForm(instance=count)
+
+    return render(request, "edit-count.html", { "form":form })
+
+def count_delete(request, id):
+    count = get_object_or_404(CountScope, pk=id)
+
+    if request.method == "POST":
+        count.delete()
+        return redirect("count_list")
+
+    return render(request, "count-delete.html", { "count":count })
 
 def search(request):
 

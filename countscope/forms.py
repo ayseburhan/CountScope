@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import TextInput, Textarea
+from django.forms import DateInput, DateTimeInput, TextInput, Textarea
 from countscope.models import CountScope
 
 # class CountScopeCreateForm(forms.Form):
@@ -33,4 +33,26 @@ class CountScopeCreateForm(forms.ModelForm):
                 "required":"çıklaması gereklidir."
             }
         }
-        
+class CountScopeEditForm(forms.ModelForm):
+    class Meta:
+        model = CountScope
+        fields = ('title','description','slug','date',"isActive")
+        labels = {
+            'title':"Başlık",
+            'description':'Açıklama'
+        }
+        widgets = {
+            "title": TextInput(attrs={"class":"form-control"}),
+            "description": Textarea(attrs={"class":"form-control"}),
+            "slug": TextInput(attrs={"class":"form-control"}),
+            "date":DateInput(attrs={"class":"form-control"})
+        }
+        error_messages = {
+            "title": {
+                "required":"Başlığı girmelisiniz.",
+                "max_length": "maksimum 50 karakter girmelisiniz"
+            },
+            "description": {
+                "required":"çıklaması gereklidir."
+            }
+        }
