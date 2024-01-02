@@ -1,9 +1,10 @@
 from datetime import datetime
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import  HttpResponseNotFound 
 from django.urls import reverse
+from countscope.forms import CountScopeCreateForm
 from .models import CountScope
-from django.core.paginator import Paginator
+
 
 # Create your views here.
 data = {
@@ -45,6 +46,26 @@ def home(request):
        'secenekler': secenekler,
        'kategori': kategori
    })
+def create(request):
+    # Eğer HTTP isteği POST ise (yani kullanıcı formu doldurup gönderdiyse)
+    if request.method == "POST":
+        # Form, kullanıcı tarafından gönderilen POST verileriyle oluşturuluyor
+        form = CountScopeCreateForm(request.POST)
+
+        # Form geçerli mi kontrol ediliyor
+        if form.is_valid():
+            # Form geçerliyse, yeni CountScope nesnesi veritabanına kaydediliyor
+            form.save()
+            # Kullanıcı ana sayfaya yönlendiriliyor
+            return redirect("/anasayfa")
+    else:
+        # Eğer HTTP isteği POST değilse (GET gibi), boş bir form oluşturuluyor
+        form = CountScopeCreateForm()
+
+    # Form, render edilerek HTML şablonuna gönderiliyor
+    return render(request, "create.html", {"form": form})
+
+
 def search(request):
 
     if "q" in request.GET and request.GET["q"] != "":

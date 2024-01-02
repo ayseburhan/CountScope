@@ -11,6 +11,7 @@ urlpatterns = [
     path("",views.home),
     path("anasayfa",views.home ),
     path("search",views.search, name="search"),
+    path("create", views.create, name="create"),
     path('<int:category_id>', views.getCoursesByCategoryId),
     path('<str:category_name>', views.getCoursesByCategory, name='courses_by_category'),
 ]

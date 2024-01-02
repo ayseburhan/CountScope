@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'countscope/css/style.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+{% endblock %}
+
+{% block page_title %}
+    Create Course
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+                <form action="{% url 'create' %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3 {% if field.errors %} invalid {% endif %}">
+                        {{ field.errors }}
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                
+
+                    <button class="btn btn-primary" type="submit">Kaydet</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_files %}
+    <script src="{% static 'countscope/js/script.js' %}"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        });
+    </script>
+    
+{% endblock %}

@@ -4,9 +4,9 @@ from django.utils.text import slugify
 class CountScope(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
-    date= models.DateField()
-    slug = models.SlugField(default="",null=False, blank=True, unique=True, db_index=True) 
-    isActive = models.BooleanField()
+    date= models.DateField(blank=True, null=True)
+    slug = models.SlugField(default="",null=True, blank=True, unique=True, db_index=True) 
+    isActive = models.BooleanField(default=False, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
