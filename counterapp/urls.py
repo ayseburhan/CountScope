@@ -20,4 +20,6 @@ from django.urls import path,include
 urlpatterns = [
     path("",include("countscope.urls")), #countscopede ki urls buraya yönlendirdik
     path("admin/", admin.site.urls),
+    path("account/",include("account.urls")), 
+
 ]

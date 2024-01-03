@@ -4,8 +4,9 @@ from django.http import  HttpResponseNotFound
 from django.urls import reverse
 from countscope.forms import CountScopeCreateForm, CountScopeEditForm
 from .models import CountScope
-
-
+import random
+import os
+from django.contrib.auth.decorators import login_required, user_passes_test
 # Create your views here.
 data = {
     "photo":"photo kısmı",
@@ -46,13 +47,17 @@ def home(request):
        'secenekler': secenekler,
        'kategori': kategori
    })
+
+#admin olup olmadığını kontrol eder
+def isAdmin(user):
+    return user.is_superuser
+
+@user_passes_test(isAdmin)
 def create(request):
     # Eğer HTTP isteği POST ise (yani kullanıcı formu doldurup gönderdiyse)
     if request.method == "POST":
         # Form, kullanıcı tarafından gönderilen POST verileriyle oluşturuluyor
-        form = CountScopeCreateForm(request.POST)
-
-        # Form geçerli mi kontrol ediliyor
+        form = CountScopeCreateForm(request.POST, request.FILES)
         if form.is_valid():
             # Form geçerliyse, yeni CountScope nesnesi veritabanına kaydediliyor
             form.save()
@@ -65,11 +70,13 @@ def create(request):
     # Form, render edilerek HTML şablonuna gönderiliyor
     return render(request, "create.html", {"form": form})
 
+@login_required()
 def count_list(request):
     counts = CountScope.objects.all()
     return render(request, 'count-list.html', {
         'counts': counts
     })
+
 
 def count_edit(request, id):
     count = get_object_or_404(CountScope, pk=id)
@@ -92,6 +99,22 @@ def count_delete(request, id):
 
     return render(request, "count-delete.html", { "count":count })
 
+def upload(request):
+    if request.method == "POST":
+        uploaded = request.FILES.getlist("images")
+        for file in uploaded:
+            handle_uploded_files(file)
+        return render(request, "success.html")
+    return render(request, "upload.html")
+
+def handle_uploded_files(file):
+    number=random.randint(1,999)
+    #filename _ 213.jpg
+    filename, file_extention = os.path.splitext(file.name)
+    name = filename + "_" + str(number) + file_extention 
+    with open("temp/"+ name,"wb+") as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
 def search(request):
 
     if "q" in request.GET and request.GET["q"] != "":

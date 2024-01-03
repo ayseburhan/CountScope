@@ -16,7 +16,7 @@
             <div class="card mb-3" style="width: 40rem; height: 20rem; ">
                 <div class="card-body">
                     <h5 class="card-title">{{ secenek.title|title }}</h5>
-                    <p class="card-text">{{ secenek.description|title }}</p>
+                    <p class="card-text">{{ secenek.description|safe }}</p>
                     <a href="{{ secenek.slug }}" class="card-link">{{secenek.title|title}} Yükle</a>
                     <p>{{secenek.date | date:'SHORT_DATE_FORMAT'}}</p>
                     {% include 'partials/_pagination.html' %}
